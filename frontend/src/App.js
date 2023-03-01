@@ -1,13 +1,31 @@
 import React, { useState, useRef } from "react";
-import Pawns from "./components/pawns";
+import {
+  R1L3,
+  R1L2R1,
+  R1L1R1L1,
+  R1L1R2,
+  R4,
+  R3L1,
+  R2L2,
+  R2L1R1,
+  L1R3,
+  L1R2L1,
+  L1R1L1R1,
+  L1R1L2,
+  L4,
+  L3R1,
+  L2R2,
+  L2R1L1,
+} from "./components/playersMovesLogic";
 import "./App.scss";
+// import { R1L2R1 } from "./components/R1L2R1";
 
 const Board = () => {
-  const [clicked, setClicked] = useState(false);
   const [prevSquare, setPrevSquare] = useState(null);
   const squareRef = useRef([]);
   const squareRefPawns = useRef([]);
   const [boardData, setBoardData] = useState([]);
+  const [playerTurn, setPlayerTurn] = useState("1");
 
   let boardElements = [];
 
@@ -63,7 +81,7 @@ const Board = () => {
     }
   }
 
-  async function handleSquareClick(i, j) {
+  function handleSquareClick(i, j) {
     const clickedSquareData = boardData.find(
       (square) => square[1] === i && square[2] === j
     );
@@ -73,21 +91,69 @@ const Board = () => {
       const [prevRow, prevCol] = prevSquare;
       const prevSquareIndex = prevRow * 10 + prevCol;
       const currentSquareIndex = row * 10 + col;
-      const prevSquareofcurrentIndex = (row - 2) * 10 + (col - 2);
-
-      // function waitForCurrentIndex() {
-      //   return new Promise((resolve) => {
-      //     const intervalId = setInterval(() => {
-      //       if (prevSquareofcurrentIndex === currentSquareIndex) {
-      //         console.log("Waiting for");
-      //         clearInterval(intervalId);
-      //         resolve();
-      //       }
-      //     }, 100); // delay in milliseconds
-      //   });
-      // }
+      const possibleIndices = [
+        prevSquareIndex - 11,
+        prevSquareIndex - 33,
+        prevSquareIndex - 55,
+        prevSquareIndex - 77,
+      ];
+      const possibleIndicesEmpty = [
+        prevSquareIndex - 22,
+        prevSquareIndex - 44,
+        prevSquareIndex - 66,
+        prevSquareIndex - 88,
+      ];
+      const possibleIndicesLeft = [
+        prevSquareIndex - 9,
+        prevSquareIndex - 27,
+        prevSquareIndex - 45,
+        prevSquareIndex - 63,
+      ];
+      const possibleIndicesEmptyLeft = [
+        prevSquareIndex - 18,
+        prevSquareIndex - 36,
+        prevSquareIndex - 54,
+        prevSquareIndex - 72,
+      ];
+      const possibleIndicesR1AferThatL3 = [
+        [
+          prevSquareIndex - 9,
+          prevSquareIndex - 29,
+          prevSquareIndex - 51,
+          prevSquareIndex - 73,
+        ],
+        [
+          prevSquareIndex - 18,
+          prevSquareIndex - 40,
+          prevSquareIndex - 62,
+          prevSquareIndex - 84,
+        ],
+      ];
 
       squareRef.current[prevSquareIndex].classList.remove("gray-box");
+
+      // !1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+      // ! R move L / R
+      if (
+        boardData[prevSquareIndex][0] == 1 &&
+        boardData[currentSquareIndex][0] == 0 &&
+        (currentSquareIndex == prevSquareIndex + 9 ||
+          currentSquareIndex == prevSquareIndex + 11)
+      ) {
+        squareRef.current[currentSquareIndex].classList.add(
+          "board-square-even"
+        );
+        squareRefPawns.current[currentSquareIndex].classList.add("red-square");
+        setBoardData((prevData) => {
+          const newData = [...prevData];
+          newData[prevSquareIndex][0] = 0;
+          newData[currentSquareIndex][0] = 1;
+          return newData;
+        });
+        squareRefPawns.current[prevSquareIndex].classList.remove("red-square");
+      }
+
+      // ! 2222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222
       // ! B move L / R
       if (
         boardData[prevSquareIndex][0] == 2 &&
@@ -107,28 +173,9 @@ const Board = () => {
         });
         squareRefPawns.current[prevSquareIndex].classList.remove("blue-square");
       }
-      // ! R move L / R
-      else if (
-        boardData[prevSquareIndex][0] == 1 &&
-        boardData[currentSquareIndex][0] == 0 &&
-        (currentSquareIndex == prevSquareIndex + 9 ||
-          currentSquareIndex == prevSquareIndex + 11)
-      ) {
-        squareRef.current[currentSquareIndex].classList.add(
-          "board-square-even"
-        );
-        squareRefPawns.current[currentSquareIndex].classList.add("red-square");
-        setBoardData((prevData) => {
-          const newData = [...prevData];
-          newData[prevSquareIndex][0] = 0;
-          newData[currentSquareIndex][0] = 1;
-          return newData;
-        });
-        squareRefPawns.current[prevSquareIndex].classList.remove("red-square");
-      }
       // ! B eat R
       else if (
-        boardData[prevSquareIndex][0] == 2 &&
+        boardData[prevSquareIndex][0] === 2 &&
         boardData[currentSquareIndex][0] == 0 &&
         boardData[prevSquareIndex - 9][0] == 1 &&
         currentSquareIndex == prevSquareIndex - 18
@@ -158,7 +205,6 @@ const Board = () => {
         boardData[prevSquareIndex - 11][0] == 1 &&
         currentSquareIndex == prevSquareIndex - 22
       ) {
-        console.log("albatata m3a alkhorshaf");
         squareRef.current[currentSquareIndex].classList.add(
           "board-square-even"
         );
@@ -175,8 +221,236 @@ const Board = () => {
         );
         squareRefPawns.current[prevSquareIndex].classList.remove("blue-square");
       }
+      // ! B MultiEat L
+      else if (
+        boardData[currentSquareIndex][0] == 0 &&
+        boardData[prevSquareIndex][0] === 2 &&
+        currentSquareIndex ==
+          prevSquareIndex - (prevSquareIndex - currentSquareIndex) &&
+        (prevSquareIndex - currentSquareIndex == 88
+          ? possibleIndices.every((index) => boardData[index][0] === 1) &&
+            possibleIndicesEmpty.every((index) => boardData[index][0] === 0)
+          : prevSquareIndex - currentSquareIndex == 66
+          ? possibleIndices
+              .slice(0, 3)
+              .every((index) => boardData[index][0] === 1) &&
+            possibleIndicesEmpty
+              .slice(0, 3)
+              .every((index) => boardData[index][0] === 0)
+          : possibleIndices
+              .slice(0, 2)
+              .every((index) => boardData[index][0] === 1) &&
+            possibleIndicesEmpty
+              .slice(0, 2)
+              .every((index) => boardData[index][0] === 0))
+      ) {
+        console.log("ahaaaaaaaaaaaaaaaah");
+        if (prevSquareIndex - currentSquareIndex === 88) {
+          possibleIndices.forEach((index) => {
+            setBoardData((prevData) => {
+              const newData = [...prevData];
+              newData[index][0] = 0;
+              return newData;
+            });
+            squareRefPawns.current[index].classList.remove("red-square");
+          });
+          squareRefPawns.current[prevSquareIndex].classList.remove(
+            "blue-square"
+          );
+          squareRefPawns.current[currentSquareIndex].classList.add(
+            "blue-square"
+          );
+          setBoardData((prevData) => {
+            const newData = [...prevData];
+            newData[currentSquareIndex][0] = 2;
+            newData[prevSquareIndex][0] = 0;
+            return newData;
+          });
+        } else if (prevSquareIndex - currentSquareIndex === 66) {
+          possibleIndices.slice(0, 3).forEach((index) => {
+            setBoardData((prevData) => {
+              const newData = [...prevData];
+              newData[index][0] = 0;
+              return newData;
+            });
+            squareRefPawns.current[index].classList.remove("red-square");
+          });
+          squareRefPawns.current[prevSquareIndex].classList.remove(
+            "blue-square"
+          );
+          squareRefPawns.current[currentSquareIndex].classList.add(
+            "blue-square"
+          );
+          setBoardData((prevData) => {
+            const newData = [...prevData];
+            newData[currentSquareIndex][0] = 2;
+            newData[prevSquareIndex][0] = 0;
+            return newData;
+          });
+        } else if (prevSquareIndex - currentSquareIndex === 44) {
+          possibleIndices.slice(0, 2).forEach((index) => {
+            setBoardData((prevData) => {
+              const newData = [...prevData];
+              newData[index][0] = 0;
+              return newData;
+            });
+            squareRefPawns.current[index].classList.remove("red-square");
+          });
+          squareRefPawns.current[prevSquareIndex].classList.remove(
+            "blue-square"
+          );
+          squareRefPawns.current[currentSquareIndex].classList.add(
+            "blue-square"
+          );
+          setBoardData((prevData) => {
+            const newData = [...prevData];
+            newData[currentSquareIndex][0] = 2;
+            newData[prevSquareIndex][0] = 0;
+            return newData;
+          });
+        }
+        // if (
+        //   boardData[currentSquareIndex][0] === 2 &&
+        //   (boardData[prevSquareIndex - 11][0] == 1 ||
+        //     boardData[prevSquareIndex - 9][0] == 1)
+        // ) {
+        //   squareRef.current[prevSquareIndex - 22].classList.add("gray-box");
 
-      function checkToEat(row, col) {}
+        //   alert("continue eating");
+        // }
+      }
+
+      // ! B MultiEat R1 after that L3
+      else
+        R1L3(
+          prevSquareIndex,
+          currentSquareIndex,
+          boardData,
+          squareRef,
+          squareRefPawns,
+          setBoardData
+        );
+
+      R1L2R1(
+        prevSquareIndex,
+        currentSquareIndex,
+        boardData,
+        squareRef,
+        squareRefPawns,
+        setBoardData
+      );
+      R1L1R1L1(
+        prevSquareIndex,
+        currentSquareIndex,
+        boardData,
+        squareRef,
+        squareRefPawns,
+        setBoardData
+      );
+      R1L1R2(
+        prevSquareIndex,
+        currentSquareIndex,
+        boardData,
+        squareRef,
+        squareRefPawns,
+        setBoardData
+      );
+      R4(
+        prevSquareIndex,
+        currentSquareIndex,
+        boardData,
+        squareRef,
+        squareRefPawns,
+        setBoardData
+      );
+      R3L1(
+        prevSquareIndex,
+        currentSquareIndex,
+        boardData,
+        squareRef,
+        squareRefPawns,
+        setBoardData
+      );
+      R2L2(
+        prevSquareIndex,
+        currentSquareIndex,
+        boardData,
+        squareRef,
+        squareRefPawns,
+        setBoardData
+      );
+      R2L1R1(
+        prevSquareIndex,
+        currentSquareIndex,
+        boardData,
+        squareRef,
+        squareRefPawns,
+        setBoardData
+      );
+      L1R3(
+        prevSquareIndex,
+        currentSquareIndex,
+        boardData,
+        squareRef,
+        squareRefPawns,
+        setBoardData
+      );
+      L1R2L1(
+        prevSquareIndex,
+        currentSquareIndex,
+        boardData,
+        squareRef,
+        squareRefPawns,
+        setBoardData
+      );
+      L1R1L1R1(
+        prevSquareIndex,
+        currentSquareIndex,
+        boardData,
+        squareRef,
+        squareRefPawns,
+        setBoardData
+      );
+      L1R1L2(
+        prevSquareIndex,
+        currentSquareIndex,
+        boardData,
+        squareRef,
+        squareRefPawns,
+        setBoardData
+      );
+      L4(
+        prevSquareIndex,
+        currentSquareIndex,
+        boardData,
+        squareRef,
+        squareRefPawns,
+        setBoardData
+      );
+      L3R1(
+        prevSquareIndex,
+        currentSquareIndex,
+        boardData,
+        squareRef,
+        squareRefPawns,
+        setBoardData
+      );
+      L2R2(
+        prevSquareIndex,
+        currentSquareIndex,
+        boardData,
+        squareRef,
+        squareRefPawns,
+        setBoardData
+      );
+      L2R1L1(
+        prevSquareIndex,
+        currentSquareIndex,
+        boardData,
+        squareRef,
+        squareRefPawns,
+        setBoardData
+      );
       // if (
       //   boardData[prevSquareofcurrentIndex][0] == 0 &&
       //   boardData[prevSquareIndex - 11][0] == 1 &&
@@ -315,3 +589,12 @@ export default Board;
 // };
 
 // export default Board;
+
+// (prevSquareIndex - currentSquareIndex == 44
+//   ? boardData[possibleIndices[0]][0] === 1 &&
+//     possibleIndices.slice(2).every((index) => boardData[index][0] === 0)
+//   : prevSquareIndex - currentSquareIndex == 66
+//   ? boardData[possibleIndices[0]][0] === 1 &&
+//     possibleIndices.slice(3).every((index) => boardData[index][0] === 0)
+//   : boardData[possibleIndices[0]][0] === 1 &&
+//     possibleIndices.every((index) => boardData[index][0] === 0))
