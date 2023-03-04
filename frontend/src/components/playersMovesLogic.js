@@ -1,3 +1,114 @@
+export function R1L3P1(
+  prevSquareIndex,
+  currentSquareIndex,
+  boardData,
+  squareRef,
+  squareRefPawns,
+  setBoardData
+) {
+  const possibleIndicesEmptyAndPawns = [
+    [
+      prevSquareIndex + 9,
+      prevSquareIndex + 29,
+      prevSquareIndex + 51,
+      prevSquareIndex + 73,
+    ],
+    [
+      prevSquareIndex + 18,
+      prevSquareIndex + 40,
+      prevSquareIndex + 62,
+      prevSquareIndex + 84,
+    ],
+  ];
+  if (
+    boardData[currentSquareIndex][0] == 0 &&
+    boardData[prevSquareIndex][0] === 1 &&
+    possibleIndicesEmptyAndPawns[1].includes(currentSquareIndex) &&
+    (prevSquareIndex - currentSquareIndex == -84
+      ? possibleIndicesEmptyAndPawns[0].every(
+          (index) => boardData[index][0] === 2
+        ) &&
+        possibleIndicesEmptyAndPawns[1].every(
+          (index) => boardData[index][0] === 0
+        )
+      : prevSquareIndex - currentSquareIndex == -62
+      ? possibleIndicesEmptyAndPawns[0]
+          .slice(0, 3)
+          .every((index) => boardData[index][0] === 2) &&
+        possibleIndicesEmptyAndPawns[1]
+          .slice(0, 3)
+          .every((index) => boardData[index][0] === 0)
+      : possibleIndicesEmptyAndPawns[0]
+          .slice(0, 2)
+          .every((index) => boardData[index][0] === 2) &&
+        possibleIndicesEmptyAndPawns[1]
+          .slice(0, 2)
+          .every((index) => boardData[index][0] === 0))
+  ) {
+    console.log("ahaaaaaaaaaaaaaaaah");
+    if (prevSquareIndex - currentSquareIndex === -84) {
+      possibleIndicesEmptyAndPawns[0].forEach((index) => {
+        setBoardData((prevData) => {
+          const newData = [...prevData];
+          newData[index][0] = 0;
+          return newData;
+        });
+        squareRefPawns.current[index].classList.remove("blue-square");
+      });
+      squareRefPawns.current[prevSquareIndex].classList.remove("red-square");
+      squareRefPawns.current[currentSquareIndex].classList.add("red-square");
+      setBoardData((prevData) => {
+        const newData = [...prevData];
+        newData[currentSquareIndex][0] = 1;
+        newData[prevSquareIndex][0] = 0;
+        return newData;
+      });
+    } else if (prevSquareIndex - currentSquareIndex === -62) {
+      possibleIndicesEmptyAndPawns[0].slice(0, 3).forEach((index) => {
+        setBoardData((prevData) => {
+          const newData = [...prevData];
+          newData[index][0] = 0;
+          return newData;
+        });
+        squareRefPawns.current[index].classList.remove("blue-square");
+      });
+      squareRefPawns.current[prevSquareIndex].classList.remove("red-square");
+      squareRefPawns.current[currentSquareIndex].classList.add("red-square");
+      setBoardData((prevData) => {
+        const newData = [...prevData];
+        newData[currentSquareIndex][0] = 1;
+        newData[prevSquareIndex][0] = 0;
+        return newData;
+      });
+    } else if (prevSquareIndex - currentSquareIndex === -40) {
+      possibleIndicesEmptyAndPawns[0].slice(0, 2).forEach((index) => {
+        setBoardData((prevData) => {
+          const newData = [...prevData];
+          newData[index][0] = 0;
+          return newData;
+        });
+        squareRefPawns.current[index].classList.remove("blue-square");
+      });
+      squareRefPawns.current[prevSquareIndex].classList.remove("red-square");
+      squareRefPawns.current[currentSquareIndex].classList.add("red-square");
+      setBoardData((prevData) => {
+        const newData = [...prevData];
+        newData[currentSquareIndex][0] = 1;
+        newData[prevSquareIndex][0] = 0;
+        return newData;
+      });
+    }
+    // if (
+    //   boardData[currentSquareIndex][0] === 2 &&
+    //   (boardData[prevSquareIndex - 11][0] == 1 ||
+    //     boardData[prevSquareIndex - 9][0] == 1)
+    // ) {
+    //   squareRef.current[prevSquareIndex - 22].classList.add("gray-box");
+
+    //   alert("continue eating");
+    // }
+  }
+}
 // ! player2 eats on right
 export function R1L3(
   prevSquareIndex,
@@ -7,7 +118,7 @@ export function R1L3(
   squareRefPawns,
   setBoardData
 ) {
-  const possibleIndicesR1AferThatL3 = [
+  const possibleIndicesEmptyAndPawns = [
     [
       prevSquareIndex - 9,
       prevSquareIndex - 29,
@@ -24,31 +135,31 @@ export function R1L3(
   if (
     boardData[currentSquareIndex][0] == 0 &&
     boardData[prevSquareIndex][0] === 2 &&
-    possibleIndicesR1AferThatL3[1].includes(currentSquareIndex) &&
+    possibleIndicesEmptyAndPawns[1].includes(currentSquareIndex) &&
     (prevSquareIndex - currentSquareIndex == 84
-      ? possibleIndicesR1AferThatL3[0].every(
+      ? possibleIndicesEmptyAndPawns[0].every(
           (index) => boardData[index][0] === 1
         ) &&
-        possibleIndicesR1AferThatL3[1].every(
+        possibleIndicesEmptyAndPawns[1].every(
           (index) => boardData[index][0] === 0
         )
       : prevSquareIndex - currentSquareIndex == 62
-      ? possibleIndicesR1AferThatL3[0]
+      ? possibleIndicesEmptyAndPawns[0]
           .slice(0, 3)
           .every((index) => boardData[index][0] === 1) &&
-        possibleIndicesR1AferThatL3[1]
+        possibleIndicesEmptyAndPawns[1]
           .slice(0, 3)
           .every((index) => boardData[index][0] === 0)
-      : possibleIndicesR1AferThatL3[0]
+      : possibleIndicesEmptyAndPawns[0]
           .slice(0, 2)
           .every((index) => boardData[index][0] === 1) &&
-        possibleIndicesR1AferThatL3[1]
+        possibleIndicesEmptyAndPawns[1]
           .slice(0, 2)
           .every((index) => boardData[index][0] === 0))
   ) {
     console.log("ahaaaaaaaaaaaaaaaah");
     if (prevSquareIndex - currentSquareIndex === 84) {
-      possibleIndicesR1AferThatL3[0].forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -65,7 +176,7 @@ export function R1L3(
         return newData;
       });
     } else if (prevSquareIndex - currentSquareIndex === 62) {
-      possibleIndicesR1AferThatL3[0].slice(0, 3).forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].slice(0, 3).forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -82,7 +193,7 @@ export function R1L3(
         return newData;
       });
     } else if (prevSquareIndex - currentSquareIndex === 40) {
-      possibleIndicesR1AferThatL3[0].slice(0, 2).forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].slice(0, 2).forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -118,7 +229,7 @@ export function R1L2R1(
   squareRefPawns,
   setBoardData
 ) {
-  const possibleIndicesR1AferThatL3 = [
+  const possibleIndicesEmptyAndPawns = [
     [
       prevSquareIndex - 9,
       prevSquareIndex - 29,
@@ -135,31 +246,31 @@ export function R1L2R1(
   if (
     boardData[currentSquareIndex][0] == 0 &&
     boardData[prevSquareIndex][0] === 2 &&
-    possibleIndicesR1AferThatL3[1].includes(currentSquareIndex) &&
+    possibleIndicesEmptyAndPawns[1].includes(currentSquareIndex) &&
     (prevSquareIndex - currentSquareIndex == 80
-      ? possibleIndicesR1AferThatL3[0].every(
+      ? possibleIndicesEmptyAndPawns[0].every(
           (index) => boardData[index][0] === 1
         ) &&
-        possibleIndicesR1AferThatL3[1].every(
+        possibleIndicesEmptyAndPawns[1].every(
           (index) => boardData[index][0] === 0
         )
       : prevSquareIndex - currentSquareIndex == 62
-      ? possibleIndicesR1AferThatL3[0]
+      ? possibleIndicesEmptyAndPawns[0]
           .slice(0, 3)
           .every((index) => boardData[index][0] === 1) &&
-        possibleIndicesR1AferThatL3[1]
+        possibleIndicesEmptyAndPawns[1]
           .slice(0, 3)
           .every((index) => boardData[index][0] === 0)
-      : possibleIndicesR1AferThatL3[0]
+      : possibleIndicesEmptyAndPawns[0]
           .slice(0, 2)
           .every((index) => boardData[index][0] === 1) &&
-        possibleIndicesR1AferThatL3[1]
+        possibleIndicesEmptyAndPawns[1]
           .slice(0, 2)
           .every((index) => boardData[index][0] === 0))
   ) {
     console.log("ahaaaaaaaaaaaaaaaah");
     if (prevSquareIndex - currentSquareIndex === 80) {
-      possibleIndicesR1AferThatL3[0].forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -176,7 +287,7 @@ export function R1L2R1(
         return newData;
       });
     } else if (prevSquareIndex - currentSquareIndex === 62) {
-      possibleIndicesR1AferThatL3[0].slice(0, 3).forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].slice(0, 3).forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -193,7 +304,7 @@ export function R1L2R1(
         return newData;
       });
     } else if (prevSquareIndex - currentSquareIndex === 40) {
-      possibleIndicesR1AferThatL3[0].slice(0, 2).forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].slice(0, 2).forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -229,7 +340,7 @@ export function R1L1R1L1(
   squareRefPawns,
   setBoardData
 ) {
-  const possibleIndicesR1AferThatL3 = [
+  const possibleIndicesEmptyAndPawns = [
     [
       prevSquareIndex - 9,
       prevSquareIndex - 29,
@@ -246,31 +357,31 @@ export function R1L1R1L1(
   if (
     boardData[currentSquareIndex][0] == 0 &&
     boardData[prevSquareIndex][0] === 2 &&
-    possibleIndicesR1AferThatL3[1].includes(currentSquareIndex) &&
+    possibleIndicesEmptyAndPawns[1].includes(currentSquareIndex) &&
     (prevSquareIndex - currentSquareIndex == 80
-      ? possibleIndicesR1AferThatL3[0].every(
+      ? possibleIndicesEmptyAndPawns[0].every(
           (index) => boardData[index][0] === 1
         ) &&
-        possibleIndicesR1AferThatL3[1].every(
+        possibleIndicesEmptyAndPawns[1].every(
           (index) => boardData[index][0] === 0
         )
       : prevSquareIndex - currentSquareIndex == 58
-      ? possibleIndicesR1AferThatL3[0]
+      ? possibleIndicesEmptyAndPawns[0]
           .slice(0, 3)
           .every((index) => boardData[index][0] === 1) &&
-        possibleIndicesR1AferThatL3[1]
+        possibleIndicesEmptyAndPawns[1]
           .slice(0, 3)
           .every((index) => boardData[index][0] === 0)
-      : possibleIndicesR1AferThatL3[0]
+      : possibleIndicesEmptyAndPawns[0]
           .slice(0, 2)
           .every((index) => boardData[index][0] === 1) &&
-        possibleIndicesR1AferThatL3[1]
+        possibleIndicesEmptyAndPawns[1]
           .slice(0, 2)
           .every((index) => boardData[index][0] === 0))
   ) {
     console.log("ahaaaaaaaaaaaaaaaah");
     if (prevSquareIndex - currentSquareIndex === 80) {
-      possibleIndicesR1AferThatL3[0].forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -287,7 +398,7 @@ export function R1L1R1L1(
         return newData;
       });
     } else if (prevSquareIndex - currentSquareIndex === 58) {
-      possibleIndicesR1AferThatL3[0].slice(0, 3).forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].slice(0, 3).forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -304,7 +415,7 @@ export function R1L1R1L1(
         return newData;
       });
     } else if (prevSquareIndex - currentSquareIndex === 40) {
-      possibleIndicesR1AferThatL3[0].slice(0, 2).forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].slice(0, 2).forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -340,7 +451,7 @@ export function R1L1R2(
   squareRefPawns,
   setBoardData
 ) {
-  const possibleIndicesR1AferThatL3 = [
+  const possibleIndicesEmptyAndPawns = [
     [
       prevSquareIndex - 9,
       prevSquareIndex - 29,
@@ -357,31 +468,31 @@ export function R1L1R2(
   if (
     boardData[currentSquareIndex][0] == 0 &&
     boardData[prevSquareIndex][0] === 2 &&
-    possibleIndicesR1AferThatL3[1].includes(currentSquareIndex) &&
+    possibleIndicesEmptyAndPawns[1].includes(currentSquareIndex) &&
     (prevSquareIndex - currentSquareIndex == 76
-      ? possibleIndicesR1AferThatL3[0].every(
+      ? possibleIndicesEmptyAndPawns[0].every(
           (index) => boardData[index][0] === 1
         ) &&
-        possibleIndicesR1AferThatL3[1].every(
+        possibleIndicesEmptyAndPawns[1].every(
           (index) => boardData[index][0] === 0
         )
       : prevSquareIndex - currentSquareIndex == 58
-      ? possibleIndicesR1AferThatL3[0]
+      ? possibleIndicesEmptyAndPawns[0]
           .slice(0, 3)
           .every((index) => boardData[index][0] === 1) &&
-        possibleIndicesR1AferThatL3[1]
+        possibleIndicesEmptyAndPawns[1]
           .slice(0, 3)
           .every((index) => boardData[index][0] === 0)
-      : possibleIndicesR1AferThatL3[0]
+      : possibleIndicesEmptyAndPawns[0]
           .slice(0, 2)
           .every((index) => boardData[index][0] === 1) &&
-        possibleIndicesR1AferThatL3[1]
+        possibleIndicesEmptyAndPawns[1]
           .slice(0, 2)
           .every((index) => boardData[index][0] === 0))
   ) {
     console.log("ahaaaaaaaaaaaaaaaah");
     if (prevSquareIndex - currentSquareIndex === 76) {
-      possibleIndicesR1AferThatL3[0].forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -398,7 +509,7 @@ export function R1L1R2(
         return newData;
       });
     } else if (prevSquareIndex - currentSquareIndex === 58) {
-      possibleIndicesR1AferThatL3[0].slice(0, 3).forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].slice(0, 3).forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -415,7 +526,7 @@ export function R1L1R2(
         return newData;
       });
     } else if (prevSquareIndex - currentSquareIndex === 40) {
-      possibleIndicesR1AferThatL3[0].slice(0, 2).forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].slice(0, 2).forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -451,7 +562,7 @@ export function R4(
   squareRefPawns,
   setBoardData
 ) {
-  const possibleIndicesR1AferThatL3 = [
+  const possibleIndicesEmptyAndPawns = [
     [
       prevSquareIndex - 9,
       prevSquareIndex - 27,
@@ -468,31 +579,31 @@ export function R4(
   if (
     boardData[currentSquareIndex][0] == 0 &&
     boardData[prevSquareIndex][0] === 2 &&
-    possibleIndicesR1AferThatL3[1].includes(currentSquareIndex) &&
+    possibleIndicesEmptyAndPawns[1].includes(currentSquareIndex) &&
     (prevSquareIndex - currentSquareIndex == 72
-      ? possibleIndicesR1AferThatL3[0].every(
+      ? possibleIndicesEmptyAndPawns[0].every(
           (index) => boardData[index][0] === 1
         ) &&
-        possibleIndicesR1AferThatL3[1].every(
+        possibleIndicesEmptyAndPawns[1].every(
           (index) => boardData[index][0] === 0
         )
       : prevSquareIndex - currentSquareIndex == 54
-      ? possibleIndicesR1AferThatL3[0]
+      ? possibleIndicesEmptyAndPawns[0]
           .slice(0, 3)
           .every((index) => boardData[index][0] === 1) &&
-        possibleIndicesR1AferThatL3[1]
+        possibleIndicesEmptyAndPawns[1]
           .slice(0, 3)
           .every((index) => boardData[index][0] === 0)
-      : possibleIndicesR1AferThatL3[0]
+      : possibleIndicesEmptyAndPawns[0]
           .slice(0, 2)
           .every((index) => boardData[index][0] === 1) &&
-        possibleIndicesR1AferThatL3[1]
+        possibleIndicesEmptyAndPawns[1]
           .slice(0, 2)
           .every((index) => boardData[index][0] === 0))
   ) {
     console.log("ahaaaaaaaaaaaaaaaah");
     if (prevSquareIndex - currentSquareIndex === 72) {
-      possibleIndicesR1AferThatL3[0].forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -509,7 +620,7 @@ export function R4(
         return newData;
       });
     } else if (prevSquareIndex - currentSquareIndex === 54) {
-      possibleIndicesR1AferThatL3[0].slice(0, 3).forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].slice(0, 3).forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -526,7 +637,7 @@ export function R4(
         return newData;
       });
     } else if (prevSquareIndex - currentSquareIndex === 36) {
-      possibleIndicesR1AferThatL3[0].slice(0, 2).forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].slice(0, 2).forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -562,7 +673,7 @@ export function R3L1(
   squareRefPawns,
   setBoardData
 ) {
-  const possibleIndicesR1AferThatL3 = [
+  const possibleIndicesEmptyAndPawns = [
     [
       prevSquareIndex - 9,
       prevSquareIndex - 27,
@@ -579,31 +690,31 @@ export function R3L1(
   if (
     boardData[currentSquareIndex][0] == 0 &&
     boardData[prevSquareIndex][0] === 2 &&
-    possibleIndicesR1AferThatL3[1].includes(currentSquareIndex) &&
+    possibleIndicesEmptyAndPawns[1].includes(currentSquareIndex) &&
     (prevSquareIndex - currentSquareIndex == 76
-      ? possibleIndicesR1AferThatL3[0].every(
+      ? possibleIndicesEmptyAndPawns[0].every(
           (index) => boardData[index][0] === 1
         ) &&
-        possibleIndicesR1AferThatL3[1].every(
+        possibleIndicesEmptyAndPawns[1].every(
           (index) => boardData[index][0] === 0
         )
       : prevSquareIndex - currentSquareIndex == 54
-      ? possibleIndicesR1AferThatL3[0]
+      ? possibleIndicesEmptyAndPawns[0]
           .slice(0, 3)
           .every((index) => boardData[index][0] === 1) &&
-        possibleIndicesR1AferThatL3[1]
+        possibleIndicesEmptyAndPawns[1]
           .slice(0, 3)
           .every((index) => boardData[index][0] === 0)
-      : possibleIndicesR1AferThatL3[0]
+      : possibleIndicesEmptyAndPawns[0]
           .slice(0, 2)
           .every((index) => boardData[index][0] === 1) &&
-        possibleIndicesR1AferThatL3[1]
+        possibleIndicesEmptyAndPawns[1]
           .slice(0, 2)
           .every((index) => boardData[index][0] === 0))
   ) {
     console.log("ahaaaaaaaaaaaaaaaah");
     if (prevSquareIndex - currentSquareIndex === 76) {
-      possibleIndicesR1AferThatL3[0].forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -620,7 +731,7 @@ export function R3L1(
         return newData;
       });
     } else if (prevSquareIndex - currentSquareIndex === 54) {
-      possibleIndicesR1AferThatL3[0].slice(0, 3).forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].slice(0, 3).forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -637,7 +748,7 @@ export function R3L1(
         return newData;
       });
     } else if (prevSquareIndex - currentSquareIndex === 36) {
-      possibleIndicesR1AferThatL3[0].slice(0, 2).forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].slice(0, 2).forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -673,7 +784,7 @@ export function R2L2(
   squareRefPawns,
   setBoardData
 ) {
-  const possibleIndicesR1AferThatL3 = [
+  const possibleIndicesEmptyAndPawns = [
     [
       prevSquareIndex - 9,
       prevSquareIndex - 27,
@@ -690,31 +801,31 @@ export function R2L2(
   if (
     boardData[currentSquareIndex][0] == 0 &&
     boardData[prevSquareIndex][0] === 2 &&
-    possibleIndicesR1AferThatL3[1].includes(currentSquareIndex) &&
+    possibleIndicesEmptyAndPawns[1].includes(currentSquareIndex) &&
     (prevSquareIndex - currentSquareIndex == 80
-      ? possibleIndicesR1AferThatL3[0].every(
+      ? possibleIndicesEmptyAndPawns[0].every(
           (index) => boardData[index][0] === 1
         ) &&
-        possibleIndicesR1AferThatL3[1].every(
+        possibleIndicesEmptyAndPawns[1].every(
           (index) => boardData[index][0] === 0
         )
       : prevSquareIndex - currentSquareIndex == 58
-      ? possibleIndicesR1AferThatL3[0]
+      ? possibleIndicesEmptyAndPawns[0]
           .slice(0, 3)
           .every((index) => boardData[index][0] === 1) &&
-        possibleIndicesR1AferThatL3[1]
+        possibleIndicesEmptyAndPawns[1]
           .slice(0, 3)
           .every((index) => boardData[index][0] === 0)
-      : possibleIndicesR1AferThatL3[0]
+      : possibleIndicesEmptyAndPawns[0]
           .slice(0, 2)
           .every((index) => boardData[index][0] === 1) &&
-        possibleIndicesR1AferThatL3[1]
+        possibleIndicesEmptyAndPawns[1]
           .slice(0, 2)
           .every((index) => boardData[index][0] === 0))
   ) {
     console.log("ahaaaaaaaaaaaaaaaah");
     if (prevSquareIndex - currentSquareIndex === 80) {
-      possibleIndicesR1AferThatL3[0].forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -731,7 +842,7 @@ export function R2L2(
         return newData;
       });
     } else if (prevSquareIndex - currentSquareIndex === 58) {
-      possibleIndicesR1AferThatL3[0].slice(0, 3).forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].slice(0, 3).forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -748,7 +859,7 @@ export function R2L2(
         return newData;
       });
     } else if (prevSquareIndex - currentSquareIndex === 36) {
-      possibleIndicesR1AferThatL3[0].slice(0, 2).forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].slice(0, 2).forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -784,7 +895,7 @@ export function R2L1R1(
   squareRefPawns,
   setBoardData
 ) {
-  const possibleIndicesR1AferThatL3 = [
+  const possibleIndicesEmptyAndPawns = [
     [
       prevSquareIndex - 9,
       prevSquareIndex - 27,
@@ -801,31 +912,31 @@ export function R2L1R1(
   if (
     boardData[currentSquareIndex][0] == 0 &&
     boardData[prevSquareIndex][0] === 2 &&
-    possibleIndicesR1AferThatL3[1].includes(currentSquareIndex) &&
+    possibleIndicesEmptyAndPawns[1].includes(currentSquareIndex) &&
     (prevSquareIndex - currentSquareIndex == 76
-      ? possibleIndicesR1AferThatL3[0].every(
+      ? possibleIndicesEmptyAndPawns[0].every(
           (index) => boardData[index][0] === 1
         ) &&
-        possibleIndicesR1AferThatL3[1].every(
+        possibleIndicesEmptyAndPawns[1].every(
           (index) => boardData[index][0] === 0
         )
       : prevSquareIndex - currentSquareIndex == 58
-      ? possibleIndicesR1AferThatL3[0]
+      ? possibleIndicesEmptyAndPawns[0]
           .slice(0, 3)
           .every((index) => boardData[index][0] === 1) &&
-        possibleIndicesR1AferThatL3[1]
+        possibleIndicesEmptyAndPawns[1]
           .slice(0, 3)
           .every((index) => boardData[index][0] === 0)
-      : possibleIndicesR1AferThatL3[0]
+      : possibleIndicesEmptyAndPawns[0]
           .slice(0, 2)
           .every((index) => boardData[index][0] === 1) &&
-        possibleIndicesR1AferThatL3[1]
+        possibleIndicesEmptyAndPawns[1]
           .slice(0, 2)
           .every((index) => boardData[index][0] === 0))
   ) {
     console.log("ahaaaaaaaaaaaaaaaah");
     if (prevSquareIndex - currentSquareIndex === 76) {
-      possibleIndicesR1AferThatL3[0].forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -842,7 +953,7 @@ export function R2L1R1(
         return newData;
       });
     } else if (prevSquareIndex - currentSquareIndex === 58) {
-      possibleIndicesR1AferThatL3[0].slice(0, 3).forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].slice(0, 3).forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -859,7 +970,7 @@ export function R2L1R1(
         return newData;
       });
     } else if (prevSquareIndex - currentSquareIndex === 36) {
-      possibleIndicesR1AferThatL3[0].slice(0, 2).forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].slice(0, 2).forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -896,7 +1007,7 @@ export function L1R3(
   squareRefPawns,
   setBoardData
 ) {
-  const possibleIndicesR1AferThatL3 = [
+  const possibleIndicesEmptyAndPawns = [
     [
       prevSquareIndex - 11,
       prevSquareIndex - 31,
@@ -913,31 +1024,31 @@ export function L1R3(
   if (
     boardData[currentSquareIndex][0] == 0 &&
     boardData[prevSquareIndex][0] === 2 &&
-    possibleIndicesR1AferThatL3[1].includes(currentSquareIndex) &&
+    possibleIndicesEmptyAndPawns[1].includes(currentSquareIndex) &&
     (prevSquareIndex - currentSquareIndex == 76
-      ? possibleIndicesR1AferThatL3[0].every(
+      ? possibleIndicesEmptyAndPawns[0].every(
           (index) => boardData[index][0] === 1
         ) &&
-        possibleIndicesR1AferThatL3[1].every(
+        possibleIndicesEmptyAndPawns[1].every(
           (index) => boardData[index][0] === 0
         )
       : prevSquareIndex - currentSquareIndex == 58
-      ? possibleIndicesR1AferThatL3[0]
+      ? possibleIndicesEmptyAndPawns[0]
           .slice(0, 3)
           .every((index) => boardData[index][0] === 1) &&
-        possibleIndicesR1AferThatL3[1]
+        possibleIndicesEmptyAndPawns[1]
           .slice(0, 3)
           .every((index) => boardData[index][0] === 0)
-      : possibleIndicesR1AferThatL3[0]
+      : possibleIndicesEmptyAndPawns[0]
           .slice(0, 2)
           .every((index) => boardData[index][0] === 1) &&
-        possibleIndicesR1AferThatL3[1]
+        possibleIndicesEmptyAndPawns[1]
           .slice(0, 2)
           .every((index) => boardData[index][0] === 0))
   ) {
     console.log("ahaaaaaaaaaaaaaaaah");
     if (prevSquareIndex - currentSquareIndex === 76) {
-      possibleIndicesR1AferThatL3[0].forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -954,7 +1065,7 @@ export function L1R3(
         return newData;
       });
     } else if (prevSquareIndex - currentSquareIndex === 58) {
-      possibleIndicesR1AferThatL3[0].slice(0, 3).forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].slice(0, 3).forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -971,7 +1082,7 @@ export function L1R3(
         return newData;
       });
     } else if (prevSquareIndex - currentSquareIndex === 40) {
-      possibleIndicesR1AferThatL3[0].slice(0, 2).forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].slice(0, 2).forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -1007,7 +1118,7 @@ export function L1R2L1(
   squareRefPawns,
   setBoardData
 ) {
-  const possibleIndicesR1AferThatL3 = [
+  const possibleIndicesEmptyAndPawns = [
     [
       prevSquareIndex - 11,
       prevSquareIndex - 31,
@@ -1024,31 +1135,31 @@ export function L1R2L1(
   if (
     boardData[currentSquareIndex][0] == 0 &&
     boardData[prevSquareIndex][0] === 2 &&
-    possibleIndicesR1AferThatL3[1].includes(currentSquareIndex) &&
+    possibleIndicesEmptyAndPawns[1].includes(currentSquareIndex) &&
     (prevSquareIndex - currentSquareIndex == 80
-      ? possibleIndicesR1AferThatL3[0].every(
+      ? possibleIndicesEmptyAndPawns[0].every(
           (index) => boardData[index][0] === 1
         ) &&
-        possibleIndicesR1AferThatL3[1].every(
+        possibleIndicesEmptyAndPawns[1].every(
           (index) => boardData[index][0] === 0
         )
       : prevSquareIndex - currentSquareIndex == 58
-      ? possibleIndicesR1AferThatL3[0]
+      ? possibleIndicesEmptyAndPawns[0]
           .slice(0, 3)
           .every((index) => boardData[index][0] === 1) &&
-        possibleIndicesR1AferThatL3[1]
+        possibleIndicesEmptyAndPawns[1]
           .slice(0, 3)
           .every((index) => boardData[index][0] === 0)
-      : possibleIndicesR1AferThatL3[0]
+      : possibleIndicesEmptyAndPawns[0]
           .slice(0, 2)
           .every((index) => boardData[index][0] === 1) &&
-        possibleIndicesR1AferThatL3[1]
+        possibleIndicesEmptyAndPawns[1]
           .slice(0, 2)
           .every((index) => boardData[index][0] === 0))
   ) {
     console.log("ahaaaaaaaaaaaaaaaah");
     if (prevSquareIndex - currentSquareIndex === 80) {
-      possibleIndicesR1AferThatL3[0].forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -1065,7 +1176,7 @@ export function L1R2L1(
         return newData;
       });
     } else if (prevSquareIndex - currentSquareIndex === 58) {
-      possibleIndicesR1AferThatL3[0].slice(0, 3).forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].slice(0, 3).forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -1082,7 +1193,7 @@ export function L1R2L1(
         return newData;
       });
     } else if (prevSquareIndex - currentSquareIndex === 40) {
-      possibleIndicesR1AferThatL3[0].slice(0, 2).forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].slice(0, 2).forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -1118,7 +1229,7 @@ export function L1R1L1R1(
   squareRefPawns,
   setBoardData
 ) {
-  const possibleIndicesR1AferThatL3 = [
+  const possibleIndicesEmptyAndPawns = [
     [
       prevSquareIndex - 11,
       prevSquareIndex - 31,
@@ -1135,31 +1246,31 @@ export function L1R1L1R1(
   if (
     boardData[currentSquareIndex][0] == 0 &&
     boardData[prevSquareIndex][0] === 2 &&
-    possibleIndicesR1AferThatL3[1].includes(currentSquareIndex) &&
+    possibleIndicesEmptyAndPawns[1].includes(currentSquareIndex) &&
     (prevSquareIndex - currentSquareIndex == 80
-      ? possibleIndicesR1AferThatL3[0].every(
+      ? possibleIndicesEmptyAndPawns[0].every(
           (index) => boardData[index][0] === 1
         ) &&
-        possibleIndicesR1AferThatL3[1].every(
+        possibleIndicesEmptyAndPawns[1].every(
           (index) => boardData[index][0] === 0
         )
       : prevSquareIndex - currentSquareIndex == 62
-      ? possibleIndicesR1AferThatL3[0]
+      ? possibleIndicesEmptyAndPawns[0]
           .slice(0, 3)
           .every((index) => boardData[index][0] === 1) &&
-        possibleIndicesR1AferThatL3[1]
+        possibleIndicesEmptyAndPawns[1]
           .slice(0, 3)
           .every((index) => boardData[index][0] === 0)
-      : possibleIndicesR1AferThatL3[0]
+      : possibleIndicesEmptyAndPawns[0]
           .slice(0, 2)
           .every((index) => boardData[index][0] === 1) &&
-        possibleIndicesR1AferThatL3[1]
+        possibleIndicesEmptyAndPawns[1]
           .slice(0, 2)
           .every((index) => boardData[index][0] === 0))
   ) {
     console.log("ahaaaaaaaaaaaaaaaah");
     if (prevSquareIndex - currentSquareIndex === 80) {
-      possibleIndicesR1AferThatL3[0].forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -1176,7 +1287,7 @@ export function L1R1L1R1(
         return newData;
       });
     } else if (prevSquareIndex - currentSquareIndex === 62) {
-      possibleIndicesR1AferThatL3[0].slice(0, 3).forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].slice(0, 3).forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -1193,7 +1304,7 @@ export function L1R1L1R1(
         return newData;
       });
     } else if (prevSquareIndex - currentSquareIndex === 40) {
-      possibleIndicesR1AferThatL3[0].slice(0, 2).forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].slice(0, 2).forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -1229,7 +1340,7 @@ export function L1R1L2(
   squareRefPawns,
   setBoardData
 ) {
-  const possibleIndicesR1AferThatL3 = [
+  const possibleIndicesEmptyAndPawns = [
     [
       prevSquareIndex - 11,
       prevSquareIndex - 31,
@@ -1246,31 +1357,31 @@ export function L1R1L2(
   if (
     boardData[currentSquareIndex][0] == 0 &&
     boardData[prevSquareIndex][0] === 2 &&
-    possibleIndicesR1AferThatL3[1].includes(currentSquareIndex) &&
+    possibleIndicesEmptyAndPawns[1].includes(currentSquareIndex) &&
     (prevSquareIndex - currentSquareIndex == 84
-      ? possibleIndicesR1AferThatL3[0].every(
+      ? possibleIndicesEmptyAndPawns[0].every(
           (index) => boardData[index][0] === 1
         ) &&
-        possibleIndicesR1AferThatL3[1].every(
+        possibleIndicesEmptyAndPawns[1].every(
           (index) => boardData[index][0] === 0
         )
       : prevSquareIndex - currentSquareIndex == 62
-      ? possibleIndicesR1AferThatL3[0]
+      ? possibleIndicesEmptyAndPawns[0]
           .slice(0, 3)
           .every((index) => boardData[index][0] === 1) &&
-        possibleIndicesR1AferThatL3[1]
+        possibleIndicesEmptyAndPawns[1]
           .slice(0, 3)
           .every((index) => boardData[index][0] === 0)
-      : possibleIndicesR1AferThatL3[0]
+      : possibleIndicesEmptyAndPawns[0]
           .slice(0, 2)
           .every((index) => boardData[index][0] === 1) &&
-        possibleIndicesR1AferThatL3[1]
+        possibleIndicesEmptyAndPawns[1]
           .slice(0, 2)
           .every((index) => boardData[index][0] === 0))
   ) {
     console.log("ahaaaaaaaaaaaaaaaah");
     if (prevSquareIndex - currentSquareIndex === 84) {
-      possibleIndicesR1AferThatL3[0].forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -1287,7 +1398,7 @@ export function L1R1L2(
         return newData;
       });
     } else if (prevSquareIndex - currentSquareIndex === 62) {
-      possibleIndicesR1AferThatL3[0].slice(0, 3).forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].slice(0, 3).forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -1304,7 +1415,7 @@ export function L1R1L2(
         return newData;
       });
     } else if (prevSquareIndex - currentSquareIndex === 40) {
-      possibleIndicesR1AferThatL3[0].slice(0, 2).forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].slice(0, 2).forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -1340,7 +1451,7 @@ export function L4(
   squareRefPawns,
   setBoardData
 ) {
-  const possibleIndicesR1AferThatL3 = [
+  const possibleIndicesEmptyAndPawns = [
     [
       prevSquareIndex - 11,
       prevSquareIndex - 33,
@@ -1357,31 +1468,31 @@ export function L4(
   if (
     boardData[currentSquareIndex][0] == 0 &&
     boardData[prevSquareIndex][0] === 2 &&
-    possibleIndicesR1AferThatL3[1].includes(currentSquareIndex) &&
+    possibleIndicesEmptyAndPawns[1].includes(currentSquareIndex) &&
     (prevSquareIndex - currentSquareIndex == 88
-      ? possibleIndicesR1AferThatL3[0].every(
+      ? possibleIndicesEmptyAndPawns[0].every(
           (index) => boardData[index][0] === 1
         ) &&
-        possibleIndicesR1AferThatL3[1].every(
+        possibleIndicesEmptyAndPawns[1].every(
           (index) => boardData[index][0] === 0
         )
       : prevSquareIndex - currentSquareIndex == 66
-      ? possibleIndicesR1AferThatL3[0]
+      ? possibleIndicesEmptyAndPawns[0]
           .slice(0, 3)
           .every((index) => boardData[index][0] === 1) &&
-        possibleIndicesR1AferThatL3[1]
+        possibleIndicesEmptyAndPawns[1]
           .slice(0, 3)
           .every((index) => boardData[index][0] === 0)
-      : possibleIndicesR1AferThatL3[0]
+      : possibleIndicesEmptyAndPawns[0]
           .slice(0, 2)
           .every((index) => boardData[index][0] === 1) &&
-        possibleIndicesR1AferThatL3[1]
+        possibleIndicesEmptyAndPawns[1]
           .slice(0, 2)
           .every((index) => boardData[index][0] === 0))
   ) {
     console.log("ahaaaaaaaaaaaaaaaah");
     if (prevSquareIndex - currentSquareIndex === 88) {
-      possibleIndicesR1AferThatL3[0].forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -1398,7 +1509,7 @@ export function L4(
         return newData;
       });
     } else if (prevSquareIndex - currentSquareIndex === 66) {
-      possibleIndicesR1AferThatL3[0].slice(0, 3).forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].slice(0, 3).forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -1415,7 +1526,7 @@ export function L4(
         return newData;
       });
     } else if (prevSquareIndex - currentSquareIndex === 44) {
-      possibleIndicesR1AferThatL3[0].slice(0, 2).forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].slice(0, 2).forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -1451,7 +1562,7 @@ export function L3R1(
   squareRefPawns,
   setBoardData
 ) {
-  const possibleIndicesR1AferThatL3 = [
+  const possibleIndicesEmptyAndPawns = [
     [
       prevSquareIndex - 11,
       prevSquareIndex - 33,
@@ -1468,31 +1579,31 @@ export function L3R1(
   if (
     boardData[currentSquareIndex][0] == 0 &&
     boardData[prevSquareIndex][0] === 2 &&
-    possibleIndicesR1AferThatL3[1].includes(currentSquareIndex) &&
+    possibleIndicesEmptyAndPawns[1].includes(currentSquareIndex) &&
     (prevSquareIndex - currentSquareIndex == 85
-      ? possibleIndicesR1AferThatL3[0].every(
+      ? possibleIndicesEmptyAndPawns[0].every(
           (index) => boardData[index][0] === 1
         ) &&
-        possibleIndicesR1AferThatL3[1].every(
+        possibleIndicesEmptyAndPawns[1].every(
           (index) => boardData[index][0] === 0
         )
       : prevSquareIndex - currentSquareIndex == 66
-      ? possibleIndicesR1AferThatL3[0]
+      ? possibleIndicesEmptyAndPawns[0]
           .slice(0, 3)
           .every((index) => boardData[index][0] === 1) &&
-        possibleIndicesR1AferThatL3[1]
+        possibleIndicesEmptyAndPawns[1]
           .slice(0, 3)
           .every((index) => boardData[index][0] === 0)
-      : possibleIndicesR1AferThatL3[0]
+      : possibleIndicesEmptyAndPawns[0]
           .slice(0, 2)
           .every((index) => boardData[index][0] === 1) &&
-        possibleIndicesR1AferThatL3[1]
+        possibleIndicesEmptyAndPawns[1]
           .slice(0, 2)
           .every((index) => boardData[index][0] === 0))
   ) {
     console.log("ahaaaaaaaaaaaaaaaah");
     if (prevSquareIndex - currentSquareIndex === 85) {
-      possibleIndicesR1AferThatL3[0].forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -1509,7 +1620,7 @@ export function L3R1(
         return newData;
       });
     } else if (prevSquareIndex - currentSquareIndex === 66) {
-      possibleIndicesR1AferThatL3[0].slice(0, 3).forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].slice(0, 3).forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -1526,7 +1637,7 @@ export function L3R1(
         return newData;
       });
     } else if (prevSquareIndex - currentSquareIndex === 44) {
-      possibleIndicesR1AferThatL3[0].slice(0, 2).forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].slice(0, 2).forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -1562,7 +1673,7 @@ export function L2R2(
   squareRefPawns,
   setBoardData
 ) {
-  const possibleIndicesR1AferThatL3 = [
+  const possibleIndicesEmptyAndPawns = [
     [
       prevSquareIndex - 11,
       prevSquareIndex - 33,
@@ -1579,31 +1690,31 @@ export function L2R2(
   if (
     boardData[currentSquareIndex][0] == 0 &&
     boardData[prevSquareIndex][0] === 2 &&
-    possibleIndicesR1AferThatL3[1].includes(currentSquareIndex) &&
+    possibleIndicesEmptyAndPawns[1].includes(currentSquareIndex) &&
     (prevSquareIndex - currentSquareIndex == 80
-      ? possibleIndicesR1AferThatL3[0].every(
+      ? possibleIndicesEmptyAndPawns[0].every(
           (index) => boardData[index][0] === 1
         ) &&
-        possibleIndicesR1AferThatL3[1].every(
+        possibleIndicesEmptyAndPawns[1].every(
           (index) => boardData[index][0] === 0
         )
       : prevSquareIndex - currentSquareIndex == 62
-      ? possibleIndicesR1AferThatL3[0]
+      ? possibleIndicesEmptyAndPawns[0]
           .slice(0, 3)
           .every((index) => boardData[index][0] === 1) &&
-        possibleIndicesR1AferThatL3[1]
+        possibleIndicesEmptyAndPawns[1]
           .slice(0, 3)
           .every((index) => boardData[index][0] === 0)
-      : possibleIndicesR1AferThatL3[0]
+      : possibleIndicesEmptyAndPawns[0]
           .slice(0, 2)
           .every((index) => boardData[index][0] === 1) &&
-        possibleIndicesR1AferThatL3[1]
+        possibleIndicesEmptyAndPawns[1]
           .slice(0, 2)
           .every((index) => boardData[index][0] === 0))
   ) {
     console.log("ahaaaaaaaaaaaaaaaah");
     if (prevSquareIndex - currentSquareIndex === 80) {
-      possibleIndicesR1AferThatL3[0].forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -1620,7 +1731,7 @@ export function L2R2(
         return newData;
       });
     } else if (prevSquareIndex - currentSquareIndex === 62) {
-      possibleIndicesR1AferThatL3[0].slice(0, 3).forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].slice(0, 3).forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -1637,7 +1748,7 @@ export function L2R2(
         return newData;
       });
     } else if (prevSquareIndex - currentSquareIndex === 44) {
-      possibleIndicesR1AferThatL3[0].slice(0, 2).forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].slice(0, 2).forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -1673,7 +1784,7 @@ export function L2R1L1(
   squareRefPawns,
   setBoardData
 ) {
-  const possibleIndicesR1AferThatL3 = [
+  const possibleIndicesEmptyAndPawns = [
     [
       prevSquareIndex - 11,
       prevSquareIndex - 33,
@@ -1690,31 +1801,31 @@ export function L2R1L1(
   if (
     boardData[currentSquareIndex][0] == 0 &&
     boardData[prevSquareIndex][0] === 2 &&
-    possibleIndicesR1AferThatL3[1].includes(currentSquareIndex) &&
+    possibleIndicesEmptyAndPawns[1].includes(currentSquareIndex) &&
     (prevSquareIndex - currentSquareIndex == 84
-      ? possibleIndicesR1AferThatL3[0].every(
+      ? possibleIndicesEmptyAndPawns[0].every(
           (index) => boardData[index][0] === 1
         ) &&
-        possibleIndicesR1AferThatL3[1].every(
+        possibleIndicesEmptyAndPawns[1].every(
           (index) => boardData[index][0] === 0
         )
       : prevSquareIndex - currentSquareIndex == 62
-      ? possibleIndicesR1AferThatL3[0]
+      ? possibleIndicesEmptyAndPawns[0]
           .slice(0, 3)
           .every((index) => boardData[index][0] === 1) &&
-        possibleIndicesR1AferThatL3[1]
+        possibleIndicesEmptyAndPawns[1]
           .slice(0, 3)
           .every((index) => boardData[index][0] === 0)
-      : possibleIndicesR1AferThatL3[0]
+      : possibleIndicesEmptyAndPawns[0]
           .slice(0, 2)
           .every((index) => boardData[index][0] === 1) &&
-        possibleIndicesR1AferThatL3[1]
+        possibleIndicesEmptyAndPawns[1]
           .slice(0, 2)
           .every((index) => boardData[index][0] === 0))
   ) {
     console.log("ahaaaaaaaaaaaaaaaah");
     if (prevSquareIndex - currentSquareIndex === 84) {
-      possibleIndicesR1AferThatL3[0].forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -1731,7 +1842,7 @@ export function L2R1L1(
         return newData;
       });
     } else if (prevSquareIndex - currentSquareIndex === 62) {
-      possibleIndicesR1AferThatL3[0].slice(0, 3).forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].slice(0, 3).forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;
@@ -1748,7 +1859,7 @@ export function L2R1L1(
         return newData;
       });
     } else if (prevSquareIndex - currentSquareIndex === 44) {
-      possibleIndicesR1AferThatL3[0].slice(0, 2).forEach((index) => {
+      possibleIndicesEmptyAndPawns[0].slice(0, 2).forEach((index) => {
         setBoardData((prevData) => {
           const newData = [...prevData];
           newData[index][0] = 0;

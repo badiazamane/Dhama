@@ -16,6 +16,7 @@ import {
   L3R1,
   L2R2,
   L2R1L1,
+  R1L3P1,
 } from "./components/playersMovesLogic";
 import "./App.scss";
 // import { R1L2R1 } from "./components/R1L2R1";
@@ -444,6 +445,14 @@ const Board = () => {
         setBoardData
       );
       L2R1L1(
+        prevSquareIndex,
+        currentSquareIndex,
+        boardData,
+        squareRef,
+        squareRefPawns,
+        setBoardData
+      );
+      R1L3P1(
         prevSquareIndex,
         currentSquareIndex,
         boardData,
